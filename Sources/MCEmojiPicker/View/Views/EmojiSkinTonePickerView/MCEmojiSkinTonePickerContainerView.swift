@@ -100,6 +100,9 @@ final class MCEmojiSkinTonePickerContainerView: UIView {
     // MARK: - Private Methods
     
     private func setupSkinTonePicker() {
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseInOut]) {
+            self.backgroundColor = .black.withAlphaComponent(0.65)
+        }
         addSubview(skinTonePicker)
     }
     

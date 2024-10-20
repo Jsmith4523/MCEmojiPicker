@@ -81,11 +81,11 @@ final class MCEmojiPickerView: UIView {
             MCEmojiCollectionViewCell.self,
             forCellWithReuseIdentifier: MCEmojiCollectionViewCell.reuseIdentifier
         )
-//        collectionView.register(
-//            MCEmojiSectionHeader.self,
-//            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-//            withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier
-//        )
+        collectionView.register(
+            MCEmojiSectionHeader.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier
+        )
         return collectionView
     }()
     
@@ -230,13 +230,13 @@ final class MCEmojiPickerView: UIView {
                 at: IndexPath(item: .zero, section: section)
               )?.frame
         else { return }
-        collectionView.setContentOffset(
-            CGPoint(
-                x:  -collectionView.contentInset.left,
-                y: cellFrame.minY - headerFrame.height
-            ),
-            animated: false
-        )
+//        collectionView.setContentOffset(
+//            CGPoint(
+//                x:  -collectionView.contentInset.left,
+//                y: cellFrame.minY - headerFrame.height
+//            ),
+//            animated: false
+//        )
     }
 }
 
@@ -270,25 +270,25 @@ extension MCEmojiPickerView: UICollectionViewDataSource {
         return cell
     }
     
-//    public func collectionView(
-//        _ collectionView: UICollectionView,
-//        viewForSupplementaryElementOfKind kind: String,
-//        at indexPath: IndexPath
-//    ) -> UICollectionReusableView {
-//        guard kind == UICollectionView.elementKindSectionHeader,
-//              let sectionHeader = collectionView.dequeueReusableSupplementaryView(
-//                ofKind: kind,
-//                withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier,
-//                for: indexPath
-//              ) as? MCEmojiSectionHeader
-//        else { return UICollectionReusableView() }
-//        sectionHeader.configure(
-//            with: delegate?.sectionHeaderName(
-//                for: indexPath.section
-//            ) ?? ""
-//        )
-//        return sectionHeader
-//    }
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader,
+              let sectionHeader = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier,
+                for: indexPath
+              ) as? MCEmojiSectionHeader
+        else { return UICollectionReusableView() }
+        sectionHeader.configure(
+            with: delegate?.sectionHeaderName(
+                for: indexPath.section
+            ) ?? ""
+        )
+        return sectionHeader
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -355,16 +355,16 @@ extension MCEmojiPickerView: UIScrollViewDelegate {
 extension MCEmojiPickerView: MCEmojiCollectionViewCellDelegate {
     func preview(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {
         guard let sourceView = window else { return }
-        toggleCollectionScrollAbility(isEnabled: false)
-        
-        previewContainerView.removeFromSuperview()
-        previewContainerView = MCEmojiPreviewView(
-            emoji: emoji,
-            sender: cell.emojiLabel,
-            sourceView: sourceView
-        )
-        
-        sourceView.addSubview(previewContainerView)
+        toggleCollectionScrollAbility(isEnabled: true)
+//
+//        previewContainerView.removeFromSuperview()
+//        previewContainerView = MCEmojiPreviewView(
+//            emoji: emoji,
+//            sender: cell.emojiLabel,
+//            sourceView: sourceView
+//        )
+//        
+//        sourceView.addSubview(previewContainerView)
     }
     
     func choiceSkinTone(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {

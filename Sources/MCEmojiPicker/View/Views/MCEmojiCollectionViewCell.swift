@@ -130,7 +130,8 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
             guard !isFirstChoiceSkinTone() else { return }
             delegate?.preview(emoji, in: self)
         case .ended where !isSkinTonePickerShown:
-            delegate?.didSelect(emoji, in: self)
+//            delegate?.didSelect(emoji, in: self)
+            break
         default:
             break
         }

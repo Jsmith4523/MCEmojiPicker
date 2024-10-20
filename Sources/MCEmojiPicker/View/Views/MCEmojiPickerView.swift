@@ -165,7 +165,7 @@ final class MCEmojiPickerView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor, constant: safeAreaInsets.top),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -safeAreaInsets.bottom)
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 25)
         ])
     }
     

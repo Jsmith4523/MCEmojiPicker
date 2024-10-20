@@ -56,12 +56,12 @@ final class MCUnicodeManager: MCUnicodeManagerProtocol {
     
     /// Returns all emojis available for the current device's iOS version.
     func getEmojisForCurrentIOSVersion() -> [MCEmojiCategory] {
-        let frequentlyUsedEmojis: MCEmojiCategory = .init(
-            type: .frequentlyUsed,
-            categoryName: MCEmojiCategoryType.frequentlyUsed.emojiCategoryTitle,
-            emojis: getFrequentlyUsedEmojis()
-        )
-        return [frequentlyUsedEmojis] + defaultEmojis
+//        let frequentlyUsedEmojis: MCEmojiCategory = .init(
+//            type: .frequentlyUsed,
+//            categoryName: MCEmojiCategoryType.frequentlyUsed.emojiCategoryTitle,
+//            emojis: getFrequentlyUsedEmojis()
+//        )
+        return defaultEmojis
     }
     
     // MARK: - Private Methods

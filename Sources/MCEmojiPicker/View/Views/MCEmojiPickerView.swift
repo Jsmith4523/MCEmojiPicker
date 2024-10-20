@@ -81,11 +81,11 @@ final class MCEmojiPickerView: UIView {
             MCEmojiCollectionViewCell.self,
             forCellWithReuseIdentifier: MCEmojiCollectionViewCell.reuseIdentifier
         )
-        collectionView.register(
-            MCEmojiSectionHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier
-        )
+//        collectionView.register(
+//            MCEmojiSectionHeader.self,
+//            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+//            withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier
+//        )
         return collectionView
     }()
     
@@ -270,25 +270,25 @@ extension MCEmojiPickerView: UICollectionViewDataSource {
         return cell
     }
     
-    public func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader,
-              let sectionHeader = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier,
-                for: indexPath
-              ) as? MCEmojiSectionHeader
-        else { return UICollectionReusableView() }
-        sectionHeader.configure(
-            with: delegate?.sectionHeaderName(
-                for: indexPath.section
-            ) ?? ""
-        )
-        return sectionHeader
-    }
+//    public func collectionView(
+//        _ collectionView: UICollectionView,
+//        viewForSupplementaryElementOfKind kind: String,
+//        at indexPath: IndexPath
+//    ) -> UICollectionReusableView {
+//        guard kind == UICollectionView.elementKindSectionHeader,
+//              let sectionHeader = collectionView.dequeueReusableSupplementaryView(
+//                ofKind: kind,
+//                withReuseIdentifier: MCEmojiSectionHeader.reuseIdentifier,
+//                for: indexPath
+//              ) as? MCEmojiSectionHeader
+//        else { return UICollectionReusableView() }
+//        sectionHeader.configure(
+//            with: delegate?.sectionHeaderName(
+//                for: indexPath.section
+//            ) ?? ""
+//        )
+//        return sectionHeader
+//    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

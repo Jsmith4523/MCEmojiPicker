@@ -119,8 +119,8 @@ extension MCEmojiCategoryIconView {
             )
         )
         switch type {
-        case .frequentlyUsed:
-            CategoryIconsDrawKit.drawFrequentlyUsedCategory(frame: rect, tintColor: currentIconTintColor)
+//        case .frequentlyUsed:
+//            CategoryIconsDrawKit.drawFrequentlyUsedCategory(frame: rect, tintColor: currentIconTintColor)
         case .people:
             CategoryIconsDrawKit.drawPeopleCategory(frame: rect, tintColor: currentIconTintColor)
         case .nature:

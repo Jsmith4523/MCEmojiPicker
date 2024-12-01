@@ -68,7 +68,7 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    private var emoji: MCEmoji?
+    var emoji: MCEmoji?
     private var isSkinTonePickerShown = false
     
     private weak var delegate: MCEmojiCollectionViewCellDelegate?
@@ -77,8 +77,6 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupLayout()
-        setupGestureRecognizers()
     }
     
     required init?(coder: NSCoder) {
@@ -87,26 +85,26 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Life Cycle
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        guard !isFirstChoiceSkinTone() else { return }
-        containerView.backgroundColor = Constants.selectedCellBackgroundViewColor
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesBegan(touches, with: event)
+//        guard !isFirstChoiceSkinTone() else { return }
+//        containerView.backgroundColor = Constants.selectedCellBackgroundViewColor
+//    }
+//    
+//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesEnded(touches, with: event)
+//        guard let emoji = emoji,
+//              !(emoji.isSkinToneSupport && !emoji.isSkinBeenSelectedBefore) else { return }
+//        delegate?.didSelect(emoji, in: self)
+//        UIView.animate(withDuration: Constants.selectCellBackgroundAnimationDuration, delay: 0) {
+//            self.containerView.backgroundColor = .clear
+//        }
+//    }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        guard let emoji = emoji,
-              !(emoji.isSkinToneSupport && !emoji.isSkinBeenSelectedBefore) else { return }
-        delegate?.didSelect(emoji, in: self)
-        UIView.animate(withDuration: Constants.selectCellBackgroundAnimationDuration, delay: 0) {
-            self.containerView.backgroundColor = .clear
-        }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesCancelled(touches, with: event)
-        containerView.backgroundColor = .clear
-    }
+//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        super.touchesCancelled(touches, with: event)
+//        containerView.backgroundColor = .clear
+//    }
     
     // MARK: - Public Methods
     
@@ -117,39 +115,7 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
         self.emoji = emoji
         self.emojiLabel.text = emoji?.string
         self.delegate = delegate
-    }
-    
-    // MARK: - Actions
-    
-    @objc private func previewLongPressGestureAction(
-        _ gestureRecognizer: UILongPressGestureRecognizer
-    ) {
-        guard let emoji = emoji else { return }
-        switch gestureRecognizer.state {
-        case .began:
-            guard !isFirstChoiceSkinTone() else { return }
-            delegate?.preview(emoji, in: self)
-        case .ended where !isSkinTonePickerShown:
-//            delegate?.didSelect(emoji, in: self)
-            break
-        default:
-            break
-        }
-    }
-    
-    @objc private func choiceSkinToneLongPressGestureAction(
-        _ gestureRecognizer: UILongPressGestureRecognizer
-    ) {
-        guard let emoji = emoji else { return }
-        switch gestureRecognizer.state {
-        case .began where emoji.isSkinToneSupport && emoji.isSkinBeenSelectedBefore:
-            isSkinTonePickerShown = true
-            delegate?.choiceSkinTone(emoji, in: self)
-        case .ended where !emoji.isSkinToneSupport:
-            delegate?.didSelect(emoji, in: self)
-        default:
-            break
-        }
+        self.setupLayout()
     }
     
     // MARK: - Private Methods
@@ -189,23 +155,6 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
             emojiLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
-    private func setupGestureRecognizers() {
-        let previewLongPressGesture = UILongPressGestureRecognizer(
-            target: self,
-            action: #selector(previewLongPressGestureAction)
-        )
-        let choiceSkinToneLongPressGesture = UILongPressGestureRecognizer(
-            target: self,
-            action: #selector(choiceSkinToneLongPressGestureAction)
-        )
-        choiceSkinToneLongPressGesture.delegate = self
-        previewLongPressGesture.delegate = self
-        previewLongPressGesture.minimumPressDuration = 0.15
-        containerView.addGestureRecognizer(previewLongPressGesture)
-        containerView.addGestureRecognizer(choiceSkinToneLongPressGesture)
-    }
-    
 }
 
 // MARK: - UIGestureRecognizerDelegate

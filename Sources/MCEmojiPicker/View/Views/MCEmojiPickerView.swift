@@ -37,6 +37,7 @@ protocol MCEmojiPickerViewDelegate: AnyObject {
     func getEmojiPickerFrame() -> CGRect
     func updateEmojiSkinTone(_ skinToneRawValue: Int, in indexPath: IndexPath)
     func feedbackImpactOccurred()
+    func showSkinTonePicker(_ emoji: MCEmoji?, for indexPath: IndexPath)
 }
 
 final class MCEmojiPickerView: UIView {
@@ -74,8 +75,8 @@ final class MCEmojiPickerView: UIView {
         layout.sectionHeadersPinToVisibleBounds = true
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.verticalScrollIndicatorInsets.top = Constants.verticalScrollIndicatorTopInset
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset = Constants.collectionViewContentInsets
-        collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(
             MCEmojiCollectionViewCell.self,
@@ -291,6 +292,20 @@ extension MCEmojiPickerView: UICollectionViewDataSource {
     }
 }
 
+extension MCEmojiPickerView: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let emojiCollectionCell = collectionView.cellForItem(at: indexPath) as? MCEmojiCollectionViewCell, let emoji = emojiCollectionCell.emoji {
+            switch emoji.isSkinToneSupport {
+            case true:
+                delegate?.showSkinTonePicker(emoji, for: indexPath)
+            case false:
+                delegate?.didChoiceEmoji(emoji)
+            }
+        }
+    }
+}
+
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension MCEmojiPickerView: UICollectionViewDelegateFlowLayout {
@@ -368,21 +383,10 @@ extension MCEmojiPickerView: MCEmojiCollectionViewCellDelegate {
     }
     
     func choiceSkinTone(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {
-        guard let sourceView = window else { return }
         toggleCollectionScrollAbility(isEnabled: false)
         delegate?.feedbackImpactOccurred()
-        
-        previewContainerView.removeFromSuperview()
-        previewContainerView = MCEmojiSkinTonePickerContainerView(
-            delegate: self,
-            cell: cell,
-            emoji: emoji,
-            frame: sourceView.frame,
-            sourceView: sourceView,
-            emojiPickerFrame: delegate?.getEmojiPickerFrame() ?? .zero
-        )
-        
-        sourceView.addSubview(previewContainerView)
+
+        //self.delegate?.showSkinTonePicker(emoji)
     }
     
     func didSelect(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {

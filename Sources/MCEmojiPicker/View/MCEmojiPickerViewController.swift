@@ -191,8 +191,25 @@ public final class MCEmojiPickerViewController: UIViewController {
 }
 
 // MARK: - EmojiPickerViewDelegate
-
 extension MCEmojiPickerViewController: MCEmojiPickerViewDelegate {
+    func showSkinTonePicker(_ emoji: MCEmoji?, for indexPath: IndexPath) {
+        let pickerViewController = MCEmojiSkinTonePickerViewController(emoji: emoji)
+        let navigationController = UINavigationController(rootViewController: pickerViewController)
+        pickerViewController.skinToneSelectionCompletion = { [weak self] skinToneEmoji, skinTone in
+            pickerViewController.dismiss(animated: true) {
+                self?.updateEmojiSkinTone(skinTone.rawValue, in: indexPath)
+                emoji?.incrementUsageCount()
+                self?.delegate?.didGetEmoji(emoji: skinToneEmoji)
+            }
+        }
+        
+        navigationController.sheetPresentationController?.detents               = [.medium()]
+        navigationController.sheetPresentationController?.prefersGrabberVisible = true
+        navigationController.sheetPresentationController?.preferredCornerRadius = 30
+        
+        present(navigationController, animated: true)
+    }
+    
     func didChoiceEmojiCategory(at index: Int) {
         updateCurrentSelectedEmojiCategoryIndex(with: index)
     }

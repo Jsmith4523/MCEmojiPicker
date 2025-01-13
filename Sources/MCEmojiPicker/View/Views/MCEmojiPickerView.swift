@@ -90,7 +90,7 @@ final class MCEmojiPickerView: UIView {
         return collectionView
     }()
     
-    private let categoriesStackView: UIStackView = {
+    private lazy var categoriesStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .popoverBackgroundColor
@@ -127,10 +127,10 @@ final class MCEmojiPickerView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        setupCategoryViews()
+        //setupCategoryViews()
         setupCollectionViewLayout()
         setupCollectionViewBottomInsets()
-        setupCategoriesControlLayout()
+        //setupCategoriesControlLayout()
     }
     
     // MARK: - Public Methods
@@ -166,41 +166,41 @@ final class MCEmojiPickerView: UIView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor, constant: safeAreaInsets.top),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 25)
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 35)
         ])
     }
     
-    private func setupCategoriesControlLayout() {
-        let separatorView = UIView()
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        separatorView.backgroundColor = Constants.separatorColor
-        
-        addSubview(categoriesStackView)
-        addSubview(separatorView)
-        
-        NSLayoutConstraint.activate([
-            categoriesStackView.leadingAnchor.constraint(
-                equalTo: leadingAnchor,
-                constant: Constants.categoriesStackViewInsets.left
-            ),
-            categoriesStackView.trailingAnchor.constraint(
-                equalTo: trailingAnchor,
-                constant: Constants.categoriesStackViewInsets.right
-            ),
-            categoriesStackView.bottomAnchor.constraint(
-                equalTo: bottomAnchor,
-                constant: -safeAreaInsets.bottom
-            ),
-            categoriesStackView.heightAnchor.constraint(
-                equalToConstant: categoriesStackViewHeight
-            ),
-            
-            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            separatorView.topAnchor.constraint(equalTo: categoriesStackView.topAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: Constants.separatorHeight)
-        ])
-    }
+//    private func setupCategoriesControlLayout() {
+//        let separatorView = UIView()
+//        separatorView.translatesAutoresizingMaskIntoConstraints = false
+//        separatorView.backgroundColor = Constants.separatorColor
+//        
+//        addSubview(categoriesStackView)
+//        addSubview(separatorView)
+//        
+//        NSLayoutConstraint.activate([
+//            categoriesStackView.leadingAnchor.constraint(
+//                equalTo: leadingAnchor,
+//                constant: Constants.categoriesStackViewInsets.left
+//            ),
+//            categoriesStackView.trailingAnchor.constraint(
+//                equalTo: trailingAnchor,
+//                constant: Constants.categoriesStackViewInsets.right
+//            ),
+//            categoriesStackView.bottomAnchor.constraint(
+//                equalTo: bottomAnchor,
+//                constant: -safeAreaInsets.bottom
+//            ),
+//            categoriesStackView.heightAnchor.constraint(
+//                equalToConstant: categoriesStackViewHeight
+//            ),
+//            
+//            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+//            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+//            separatorView.topAnchor.constraint(equalTo: categoriesStackView.topAnchor),
+//            separatorView.heightAnchor.constraint(equalToConstant: Constants.separatorHeight)
+//        ])
+//    }
     
     private func setupCategoryViews() {
         for categoryIndex in 0...emojiCategoryTypes.count - 1 {

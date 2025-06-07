@@ -51,9 +51,6 @@ class MCEmojiSkinTonePickerViewController: UIViewController {
     private func setupNavigationController() {
         navigationItem.title = "Skin Tone"
         navigationItem.largeTitleDisplayMode = .never
-        
-        let closeNavigationItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismissViewController))
-        navigationItem.rightBarButtonItem = closeNavigationItem
     }
     
     private func setupCollectionView() {

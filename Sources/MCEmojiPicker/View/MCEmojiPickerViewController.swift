@@ -29,6 +29,8 @@ public protocol MCEmojiPickerDelegate: AnyObject {
 public final class MCEmojiPickerViewController: UIViewController {
     
     // MARK: - Public Properties
+	
+	public var emojiCellFrameInWindow: CGRect?
     
     /// Delegate for selecting an emoji object.
     public weak var delegate: MCEmojiPickerDelegate?
@@ -124,9 +126,14 @@ public final class MCEmojiPickerViewController: UIViewController {
         super.viewWillAppear(animated)
         setupHorizontalInset()
     }
+	
+	public override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+	}
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
         NotificationCenter.default.post(name: .MCEmojiPickerDidDisappear, object: nil)
     }
     
@@ -192,7 +199,7 @@ public final class MCEmojiPickerViewController: UIViewController {
 
 // MARK: - EmojiPickerViewDelegate
 extension MCEmojiPickerViewController: MCEmojiPickerViewDelegate {
-    func showSkinTonePicker(_ emoji: MCEmoji?, for indexPath: IndexPath) {
+	func showSkinTonePicker(_ emoji: MCEmoji?, frameInWindow: CGRect, for indexPath: IndexPath) {
         let pickerViewController = MCEmojiSkinTonePickerViewController(emoji: emoji)
         pickerViewController.skinToneSelectionCompletion = { [weak self] skinToneEmoji, skinTone in
 			self?.updateEmojiSkinTone(skinTone.rawValue, in: indexPath)
@@ -200,6 +207,7 @@ extension MCEmojiPickerViewController: MCEmojiPickerViewDelegate {
 			self?.delegate?.didGetEmoji(emoji: skinToneEmoji)
         }
 		
+		self.emojiCellFrameInWindow = frameInWindow
 		self.navigationController?.pushViewController(pickerViewController, animated: true)
     }
     

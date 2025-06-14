@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MCEmojiSkinTonePickerViewController: UIViewController {
+public class MCEmojiSkinTonePickerViewController: UIViewController {
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -17,6 +17,12 @@ class MCEmojiSkinTonePickerViewController: UIViewController {
         collectionView.register(MCEmojiSkinToneCell.self, forCellWithReuseIdentifier: "MCEmojiSkinToneCell")
         return collectionView
     }()
+	
+	private let closeButton: UIButton = {
+		let button = UIButton(type: .close)
+		button.accessibilityLabel = "Close"
+		return button
+	}()
     
     private var emoji: MCEmoji?
     
@@ -43,14 +49,19 @@ class MCEmojiSkinTonePickerViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+	public override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
     }
+	
+	public override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		navigationItem.leftBarButtonItem = .init(customView: closeButton)
+	}
     
     private func setupNavigationController() {
-        navigationItem.title = "Skin Tone"
         navigationItem.largeTitleDisplayMode = .never
+		closeButton.addTarget(self, action: #selector(dismissViewController), for: .touchUpInside)
     }
     
     private func setupCollectionView() {
@@ -69,7 +80,7 @@ class MCEmojiSkinTonePickerViewController: UIViewController {
     
     @objc
     private func dismissViewController() {
-        dismiss(animated: true)
+		navigationController?.popViewController(animated: true)
     }
 }
 
@@ -86,14 +97,14 @@ extension MCEmojiSkinTonePickerViewController: UICollectionViewDelegate {
 
 //MARK: - UICollectionViewDataSource
 extension MCEmojiSkinTonePickerViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+	public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let skinToneCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MCEmojiSkinToneCell", for: indexPath) as! MCEmojiSkinToneCell
         let emoji = skinToneEmojis[indexPath.row]
         skinToneCell.setupView(emoji: emoji)
         return skinToneCell
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return skinToneEmojis.count
     }
 }

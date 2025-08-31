@@ -51,7 +51,7 @@ fileprivate struct EmojiPickerView: UIViewControllerRepresentable {
 	}
 }
 
-open class GestureNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+public class GestureNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
 	
 	let precentDrivenAnimator = UIPercentDrivenInteractiveTransition()
 	

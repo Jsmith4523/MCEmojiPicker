@@ -379,7 +379,6 @@ extension MCEmojiPickerView: MCEmojiCollectionViewCellDelegate {
     }
     
     func choiceSkinTone(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {
-        toggleCollectionScrollAbility(isEnabled: false)
         delegate?.feedbackImpactOccurred()
         delegate?.showSkinTonePicker(emoji, for: cell.indexPath)
     }

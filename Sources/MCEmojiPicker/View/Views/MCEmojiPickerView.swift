@@ -266,7 +266,8 @@ extension MCEmojiPickerView: UICollectionViewDataSource {
         else { return UICollectionViewCell() }
         cell.configure(
             emoji: delegate?.emoji(at: indexPath),
-            delegate: self
+            delegate: self,
+            indexPath: indexPath
         )
         return cell
     }
@@ -295,8 +296,7 @@ extension MCEmojiPickerView: UICollectionViewDataSource {
 extension MCEmojiPickerView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if var emojiCollectionCell = collectionView.cellForItem(at: indexPath) as? MCEmojiCollectionViewCell, let emoji = emojiCollectionCell.emoji {
-            emojiCollectionCell.indexPath = indexPath
+        if let emojiCollectionCell = collectionView.cellForItem(at: indexPath) as? MCEmojiCollectionViewCell, let emoji = emojiCollectionCell.emoji {
             delegate?.didChoiceEmoji(emoji)
         }
     }
@@ -378,7 +378,7 @@ extension MCEmojiPickerView: MCEmojiCollectionViewCellDelegate {
 //        sourceView.addSubview(previewContainerView)
     }
     
-    func choiceSkinTone(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {
+    func choiceSkinTone(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) { 
         delegate?.feedbackImpactOccurred()
         delegate?.showSkinTonePicker(emoji, for: cell.indexPath)
     }

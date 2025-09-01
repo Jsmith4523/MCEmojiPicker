@@ -210,7 +210,8 @@ extension MCEmojiPickerViewController: MCEmojiPickerViewDelegate {
                 self?.updateEmojiSkinTone(skinTone.rawValue, in: indexPath)
             }
 			emoji?.incrementUsageCount()
-			self?.delegate?.didGetEmoji(emoji: skinToneEmoji)
+            self?.delegate?.didGetEmoji(emoji: skinToneEmoji)
+            navigationController.dismiss(animated: true)
         }
 		
 		present(navigationController, animated: true)

@@ -160,7 +160,6 @@ final class MCEmojiSkinToneCell: UICollectionViewCell {
     }
     
     @objc private func cellTapped() {
-        print("Cell tapped!")
         onTap?()
     }
     

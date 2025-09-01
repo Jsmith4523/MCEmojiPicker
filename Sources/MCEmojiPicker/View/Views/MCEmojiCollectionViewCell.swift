@@ -96,12 +96,14 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
     
     public func configure(
         emoji: MCEmoji?,
-        delegate: MCEmojiCollectionViewCellDelegate?
+        delegate: MCEmojiCollectionViewCellDelegate?,
+        indexPath: IndexPath?
     ) {
         self.addGestureRecognizer(longPressGestureRecognizer)
         self.emoji = emoji
         self.emojiLabel.text = emoji?.string
         self.delegate = delegate
+        self.indexPath = indexPath
         self.setupLayout()
     }
     

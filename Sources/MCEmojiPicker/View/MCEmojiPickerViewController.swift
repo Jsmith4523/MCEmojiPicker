@@ -207,11 +207,10 @@ extension MCEmojiPickerViewController: MCEmojiPickerViewDelegate {
         navigationController.sheetPresentationController?.prefersGrabberVisible = true
         pickerViewController.skinToneSelectionCompletion = { [weak self] skinToneEmoji, skinTone in
             if let indexPath {
+                emoji?.incrementUsageCount()
+                navigationController.dismiss(animated: true)
                 self?.updateEmojiSkinTone(skinTone.rawValue, in: indexPath)
             }
-			emoji?.incrementUsageCount()
-            self?.delegate?.didGetEmoji(emoji: skinToneEmoji)
-            navigationController.dismiss(animated: true)
         }
 		
 		present(navigationController, animated: true)

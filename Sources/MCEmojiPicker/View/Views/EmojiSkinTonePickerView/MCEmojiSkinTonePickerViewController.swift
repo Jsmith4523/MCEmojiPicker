@@ -133,6 +133,11 @@ final class MCEmojiSkinToneCell: UICollectionViewCell {
         return label
     }()
     
+    private lazy var tapGesture: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        return gesture
+    }()
+    
     var onTap: (() -> Void)?
     
     override init(frame: CGRect) {
@@ -148,7 +153,6 @@ final class MCEmojiSkinToneCell: UICollectionViewCell {
     private func setupLayout() {
         self.isUserInteractionEnabled = true
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
         addGestureRecognizer(tapGesture)
         
         addSubview(emojiLabelView)
@@ -159,8 +163,10 @@ final class MCEmojiSkinToneCell: UICollectionViewCell {
         ])
     }
     
-    @objc private func cellTapped() {
+    @objc private func cellTapped(_ sender: UITapGestureRecognizer) {
         onTap?()
+        
+        sender.reset()
     }
     
     func setupView(emoji: String) {

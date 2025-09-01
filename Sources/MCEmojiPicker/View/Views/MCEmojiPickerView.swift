@@ -37,7 +37,7 @@ protocol MCEmojiPickerViewDelegate: AnyObject {
     func getEmojiPickerFrame() -> CGRect
     func updateEmojiSkinTone(_ skinToneRawValue: Int, in indexPath: IndexPath)
     func feedbackImpactOccurred()
-	func showSkinTonePicker(_ emoji: MCEmoji?, frameInWindow: CGRect, for indexPath: IndexPath)
+    func showSkinTonePicker(_ emoji: MCEmoji?, for indexPath: IndexPath?)
 }
 
 final class MCEmojiPickerView: UIView {
@@ -295,14 +295,9 @@ extension MCEmojiPickerView: UICollectionViewDataSource {
 extension MCEmojiPickerView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let emojiCollectionCell = collectionView.cellForItem(at: indexPath) as? MCEmojiCollectionViewCell, let emoji = emojiCollectionCell.emoji {
-            switch emoji.isSkinToneSupport {
-            case true:
-				let cellFrameInWindow = emojiCollectionCell.convert(emojiCollectionCell.bounds, to: nil)
-				delegate?.showSkinTonePicker(emoji, frameInWindow: cellFrameInWindow, for: indexPath)
-            case false:
-                delegate?.didChoiceEmoji(emoji)
-            }
+        if var emojiCollectionCell = collectionView.cellForItem(at: indexPath) as? MCEmojiCollectionViewCell, let emoji = emojiCollectionCell.emoji {
+            emojiCollectionCell.indexPath = indexPath
+            delegate?.didChoiceEmoji(emoji)
         }
     }
 }
@@ -386,8 +381,7 @@ extension MCEmojiPickerView: MCEmojiCollectionViewCellDelegate {
     func choiceSkinTone(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {
         toggleCollectionScrollAbility(isEnabled: false)
         delegate?.feedbackImpactOccurred()
-
-        //self.delegate?.showSkinTonePicker(emoji)
+        delegate?.showSkinTonePicker(emoji, for: cell.indexPath)
     }
     
     func didSelect(_ emoji: MCEmoji?, in cell: MCEmojiCollectionViewCell) {

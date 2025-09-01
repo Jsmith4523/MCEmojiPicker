@@ -161,5 +161,5 @@ final class PopOutAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 }
 
 #Preview {
-    ContentView()
+    MCEmojiPickerViewController()
 }

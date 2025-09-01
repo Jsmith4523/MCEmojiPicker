@@ -71,7 +71,16 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
     var emoji: MCEmoji?
     private var isSkinTonePickerShown = false
     
+    var indexPath: IndexPath?
+    
     private weak var delegate: MCEmojiCollectionViewCellDelegate?
+    
+    private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
+        let longPressGestureRecognizer = UILongPressGestureRecognizer()
+        longPressGestureRecognizer.minimumPressDuration = 0.12
+        longPressGestureRecognizer.addTarget(self, action: #selector(didReceiveLongPressGesture))
+        return longPressGestureRecognizer
+    }()
     
     // MARK: - Initializers
     
@@ -83,35 +92,13 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Life Cycle
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesBegan(touches, with: event)
-//        guard !isFirstChoiceSkinTone() else { return }
-//        containerView.backgroundColor = Constants.selectedCellBackgroundViewColor
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesEnded(touches, with: event)
-//        guard let emoji = emoji,
-//              !(emoji.isSkinToneSupport && !emoji.isSkinBeenSelectedBefore) else { return }
-//        delegate?.didSelect(emoji, in: self)
-//        UIView.animate(withDuration: Constants.selectCellBackgroundAnimationDuration, delay: 0) {
-//            self.containerView.backgroundColor = .clear
-//        }
-//    }
-    
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesCancelled(touches, with: event)
-//        containerView.backgroundColor = .clear
-//    }
-    
     // MARK: - Public Methods
     
     public func configure(
         emoji: MCEmoji?,
         delegate: MCEmojiCollectionViewCellDelegate?
     ) {
+        self.addGestureRecognizer(longPressGestureRecognizer)
         self.emoji = emoji
         self.emojiLabel.text = emoji?.string
         self.delegate = delegate
@@ -119,6 +106,17 @@ final class MCEmojiCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Private Methods
+    
+    @objc
+    private func didReceiveLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard gestureRecognizer.state == .began else { return }
+        
+        if let emoji = emoji, emoji.isSkinToneSupport {
+            delegate?.choiceSkinTone(emoji, in: self)
+        }
+        
+        gestureRecognizer.reset()
+    }
     
     private func isFirstChoiceSkinTone() -> Bool {
         guard let emoji = emoji else { return true }
